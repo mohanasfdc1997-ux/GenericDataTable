@@ -1,0 +1,88 @@
+<template>
+
+    <lightning-card title={objectApiName}>
+
+        <slot name="header"></slot>
+
+        <template if:true={isLoading}>
+            <lightning-spinner
+                alternative-text="Loading">
+            </lightning-spinner>
+        </template>
+
+        <div class="slds-p-around_medium">
+
+            <lightning-input
+                type="search"
+                label="Search"
+                onchange={handleSearch}>
+            </lightning-input>
+
+            <lightning-button
+                label="Export CSV"
+                onclick={exportCSV}
+                class="slds-m-top_small">
+            </lightning-button>
+
+        </div>
+
+        <template if:true={error}>
+
+            <div class="slds-text-color_error
+                        slds-p-around_medium">
+
+                {errorMessage}
+
+            </div>
+
+        </template>
+
+        <template if:false={noRecords}>
+
+            <lightning-datatable
+                key-field="Id"
+                data={records}
+                columns={columns}
+                sorted-by={sortBy}
+                sorted-direction={sortDirection}
+                onsort={handleSort}
+                onsave={handleSave}
+                draft-values={draftValues}
+                onrowaction={handleRowAction}>
+            </lightning-datatable>
+
+            <div
+                class="slds-align_absolute-center
+                       slds-p-around_medium">
+
+                <lightning-button
+                    label="Previous"
+                    onclick={handlePrevious}>
+                </lightning-button>
+
+                <lightning-button
+                    class="slds-m-left_small"
+                    label="Next"
+                    onclick={handleNext}>
+                </lightning-button>
+
+            </div>
+
+        </template>
+
+        <template if:true={noRecords}>
+
+            <div
+                class="slds-p-around_medium">
+
+                No Records Found
+
+            </div>
+
+        </template>
+
+        <slot name="footer"></slot>
+
+    </lightning-card>
+
+</template>
